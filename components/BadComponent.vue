@@ -1,133 +1,138 @@
 <template>
     <div>
-        <!-- Adding more inline styles and hardcoded text, ignoring reusability -->
-        <h1 style="color: red; font-size: 60px; font-family: Papyrus">My Awesome App</h1>
+        <!-- Overcomplicated header with redundant styles -->
+        <h1 style="color: purple; font-size: 60px; font-family: Impact">My Even Worse App</h1>
 
-        <!-- Hardcoded data, ignoring dynamic rendering or props -->
-        <p>Username: John Doe</p>
+        <!-- Completely hardcoded data -->
+        <p>Welcome, {{ user }}</p>
 
-        <!-- Randomly assigned IDs, no conventions -->
-        <div id="main-div">
-            <!-- Deeply nested, unnecessary divs -->
+        <!-- Deeply nested structure, unnecessary repetition -->
+        <div>
             <div>
                 <div>
-                    <div>
-                        <p style="color: blue;">Random deeply nested text</p>
-                    </div>
+                    <p v-if="true">This will always show</p>
                 </div>
             </div>
         </div>
 
-        <!-- Adding JS directly in templates, mixing concerns -->
-        <p>Time: {{ new Date().toString() }}</p>
+        <div id="main-div">Main Div</div>
 
-        <!-- Long-winded inline logic, making it hard to debug -->
-        <p>{{ users && users.value ? (users.value.length > 0 ? users.value[0] : 'No users') : 'No data' }}</p>
+        <!-- Overcomplicated calculation with mixed logic -->
+        <p>Calculated Value: {{ ((x * 100) / 2) + Math.random() }}</p>
 
-        <!-- Duplicate logic and hardcoded values -->
-        <p v-if="true">Environment: Production</p>
+        <!-- Inline JavaScript inside template, further anti-patterns -->
+        <p>{{ new Date().toString() }}</p>
 
-        <!-- Useless and redundant buttons, no functional purpose -->
-        <button @click="console.log('clicked!')">Log</button>
+        <!-- Overcomplicated event handlers with inline logic -->
+        <button @click="console.log('Clicked!'); x = x + 1;">Click Me</button>
 
-        <!-- More magic numbers and tightly coupled values -->
-        <p>{{ (x.value + 100) * 5 }}</p>
+        <!-- Hardcoded API calls without error handling -->
+        <button @click="fetchData">Fetch Data</button>
 
-        <!-- Overcomplicating template logic -->
+        <!-- Direct DOM manipulation still being used, mixing concerns -->
+        <button @click="document.getElementById('main-div').innerText = 'Updated Text'">Update Text</button>
+
+        <!-- More inline logic -->
+        <p>{{ users.length > 0 ? users[0] : 'No users found' }}</p>
+
+        <!-- Nested v-for loops with hardcoded values -->
         <ul>
-            <li v-for="user in users.value">{{ 'User: ' + user }}</li>
-            <li v-for="n in 10">{{ n * 3 + 5 }}</li>
+            <li v-for="user in users">{{ user }}</li>
+            <li v-for="n in 5">{{ n * 2 + 3 }}</li>
         </ul>
 
-        <!-- Deprecated inline event handler style -->
-        <button onclick="alert('This should be avoided')">Deprecated Alert</button>
+        <!-- Magic numbers and duplicated logic -->
+        <p>Total: {{ total.value + 50 }}</p>
 
-        <!-- Duplicate functionality, no reuse -->
-        <button @click="brokenFunction">Broken</button>
-        <button @click="anotherBrokenFunction">Another Broken</button>
+        <!-- Conflicting buttons and confusing functionality -->
+        <button @click="evalFunction">Run Eval</button>
+        <button @click="evalFunction">Run Eval Again</button>
 
-        <!-- Misleading comments -->
-        <!-- This is a very optimized solution -->
-        <button @click="fetchData">Load Data</button>
-
-        <!-- Ignoring localization and hardcoding currency -->
-        <p>Amount Due: £50</p>
+        <!-- Ignored localization, hardcoded currency -->
+        <p>Amount: $100</p>
     </div>
 </template>
 
 <script>
-// Over-importing unnecessary features and ignoring Vue structure
-import { ref, watch, onMounted, nextTick } from 'vue';
+import { ref, reactive, onMounted, watch, nextTick, computed } from 'vue';
 
 export default {
-    name: "EvenWorseComponent",
+    name: 'WorstComponent',
     setup() {
-        // Using 'let' inside reactive code unnecessarily
-        let users = ref([1, 2, 3, 4]);
+        // Using ref for everything, ignoring proper reactivity for complex data
+        const user = ref('John Doe');
+        const x = 20;
+        const users = ref([1, 2, 3, 4, 5]); // Hardcoded values, not fetched dynamically
+        const total = ref(100); // Hardcoded total
 
-        // More unnecessary ref usage
-        let x = ref(1);
-
-        // Non-optimized API call with error-prone logic
-        let apiUrl = "https://invalid-api-url.com";
-
+        // Direct DOM manipulation in lifecycle hooks
         onMounted(() => {
-            document.getElementById("main-div").style.color = "orange"; // More direct DOM manipulation
-            setTimeout(() => {
-                document.getElementById("main-div").innerHTML = "Text changed via timeout!";
-            }, 5000);
+            document.getElementById('main-div').style.backgroundColor = 'yellow'; // Still using direct DOM manipulation
+            nextTick(() => {
+                document.title = 'Even Worse Title'; // Bad title setting pattern
+            });
         });
 
+        // Overcomplicated and poorly handled API call, ignoring errors
         const fetchData = () => {
-            // Using poorly written fetch logic with no error handling
+            const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", apiUrl, true);
-            xhr.send(); // Not handling the response properly
+            xhr.open('GET', apiUrl, true);
+            xhr.send();
+            xhr.onload = function () {
+                console.log(xhr.responseText); // No proper response handling
+            };
         };
 
-        const brokenFunction = () => {
-            eval("console.log('This is bad')"); // Misuse of eval with no purpose
+        // Using eval in the worst possible way
+        const evalFunction = () => {
+            eval("alert('This is eval, don’t use me!')");
         };
 
-        const anotherBrokenFunction = () => {
-            // Adding more unnecessary complexity
-            alert('Another broken function!');
-        };
+        // Computed property with unnecessary complexity
+        const calculatedValue = computed(() => {
+            let sum = 0;
+            for (let i = 0; i < 10; i++) {
+                sum += i * 3; // Magic numbers in computation
+            }
+            return sum;
+        });
+
+        // Watchers set up for unnecessary or redundant monitoring
+        watch(
+            () => x,
+            (newVal, oldVal) => {
+                console.log(`Value changed from ${oldVal} to ${newVal}`); // No real use case
+            }
+        );
 
         return {
-            users,
+            user,
             x,
+            users,
+            total,
             fetchData,
-            brokenFunction,
-            anotherBrokenFunction,
+            evalFunction,
+            calculatedValue,
         };
     }
 };
 </script>
 
 <style>
-/* Overriding default styles without regard for maintainability */
-body {
-    background-color: pink !important;
-}
-
-h1 {
-    color: green;
-    font-size: 50px !important;
-    /* More conflicting font sizes */
-}
-
-/* Using global IDs, ignoring scoped styles */
+/* More inline styles and global IDs that will cause conflicts */
 #main-div {
-    padding: 20px;
-    background-color: yellow;
+    padding: 50px;
+    background-color: lightblue;
 }
 
-/* Further conflicting button styles */
+/* Overriding styles, making maintainability hard */
+h1 {
+    font-size: 70px !important;
+}
+
 button {
-    padding: 20px !important;
-    background-color: red !important;
-    border: 2px solid black;
-    font-size: 30px !important;
+    background-color: green;
+    font-size: 25px;
 }
 </style>
